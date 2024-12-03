@@ -9,11 +9,13 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import Equipa2.Incremento2.model.enums.Servicos;
 import Equipa2.Incremento2.model.enums.UserType;
 import Equipa2.Incremento2.model.Admin;
 import Equipa2.Incremento2.model.Cliente;
 import Equipa2.Incremento2.model.Profissional;
 import Equipa2.Incremento2.model.Utilizador;
+import Equipa2.Incremento2.model.dto.ServicoDTO;
 import Equipa2.Incremento2.model.dto.UtilizadorDTO;
 import Equipa2.Incremento2.service.UtilizadorService;
 
@@ -71,7 +73,34 @@ public class UtilizadorController {
 
         return ResponseEntity.ok(utilizador);
     }
+     /**
+     * Encontra todos os Utilizadores de um tipo.
+     *
+     * @param tipo o tipo de Utilizador
+     * @return uma lista de todos os utilizadores com esse tipo
+     */
+    @GetMapping("/tipo")
+    public ResponseEntity<List<UtilizadorDTO>> getAllUtilizadoresByUserType(@RequestParam(value="UserType") UserType UserType){
+        List<Utilizador> utilizadores = utilizadorService.findAllByTipo(UserType.name());
+       
+        List<UtilizadorDTO> dtos = new ArrayList<>();
 
+        for(Utilizador uti : utilizadores){
+            UtilizadorDTO utilizadorDTO = new UtilizadorDTO(
+                uti.getId(),
+                uti.getNome(),
+                uti.getEmail(),
+                uti.getPassword(),
+                uti.getMorada(),
+                uti.getUserType()
+        );
+            dtos.add(utilizadorDTO);
+        }
+
+        return ResponseEntity.ok().body(dtos);
+        
+
+    }
     /**
      * Cria um utilizador.
      *
