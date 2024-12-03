@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import Equipa2.Incremento2.model.Servico;
 import Equipa2.Incremento2.model.dto.ServicoDTO;
-import Equipa2.Incremento2.model.enums.Servicos;
 import Equipa2.Incremento2.repository.ServicoRepository;
 import Equipa2.Incremento2.exceptions.ResourceNotFoundException;
 

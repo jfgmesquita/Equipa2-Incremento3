@@ -2,7 +2,6 @@ package Equipa2.Incremento2.service;
 
 import java.util.UUID;
 import java.util.List;
-import java.util.ArrayList;
 
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +10,7 @@ import Equipa2.Incremento2.model.enums.UserType;
 import Equipa2.Incremento2.model.Admin;
 import Equipa2.Incremento2.model.Cliente;
 import Equipa2.Incremento2.model.Profissional;
-import Equipa2.Incremento2.model.Servico;
+
 import Equipa2.Incremento2.model.Utilizador;
 import Equipa2.Incremento2.model.dto.UtilizadorDTO;
 import Equipa2.Incremento2.repository.AdminRepository;
