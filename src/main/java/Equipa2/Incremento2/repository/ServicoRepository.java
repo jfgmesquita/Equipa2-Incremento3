@@ -31,7 +31,7 @@ public interface ServicoRepository extends JpaRepository<Servico, UUID> {
      * @param tipo o tipo do serviço
      * @return uma lista de serviços associados ao tipo
      */
-    @Query(value = "SELECT * FROM servico where tipo = ?1", nativeQuery = true)
-    public List<Servico> findAllByTipo(Servicos tipo);
+    @Query(value = "SELECT * FROM servico s WHERE s.tipo = ?1", nativeQuery = true)
+    public List<Servico> findAllByTipo(String tipo);
 
 }

@@ -60,14 +60,26 @@ public class ServicoController {
      * @param tipo o tipo do serviço
      * @return uma lista de todos os serviços com esse tipo
      */
-    @GetMapping("/tipo/{tipo}")
-    public ResponseEntity<List<Servico>> getAllServicosByTipo(@RequestParam(value="tipo") Servicos tipo){
+    @GetMapping("/tipo")
+    public ResponseEntity<List<ServicoDTO>> getAllServicosByTipo(@RequestParam(value="tipo") Servicos tipo){
+        List<Servico> servicos = servicoService.findAllByTipo(tipo.name());
 
-        return new ResponseEntity<List<Servico>>(
-            servicoService.findAllByTipo(tipo),
-            HttpStatus.OK
-        );
+        List<ServicoDTO> dtos = new ArrayList<>();
 
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+        for (Servico ser : servicos) {
+            String formattedDate = ser.getData().format(dtf);
+            dtos.add(new ServicoDTO(
+                    ser.getId(),
+                    ser.getTipo(),
+                    ser.getDescricao(),
+                    formattedDate,
+                    ser.getValorHora(),
+                    utilizadorService.findDTOById(ser.getProfissional().getId())
+            ));
+        }
+
+        return ResponseEntity.ok().body(dtos);
     }
 
     /**

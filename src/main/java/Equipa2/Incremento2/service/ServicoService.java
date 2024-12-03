@@ -100,7 +100,7 @@ public class ServicoService {
     * @return uma lista de todos os serviços com esse tipo
     * @throws IllegalArgumentException se o tipo for nulo
     */
-    public List<Servico> findAllByTipo(Servicos tipo){
+    public List<Servico> findAllByTipo(String tipo){
         if (tipo == null) {
             throw new IllegalArgumentException("tipo não pode ser nulo.");
         }
