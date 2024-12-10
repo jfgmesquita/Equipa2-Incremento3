@@ -24,7 +24,7 @@
             </Pane>
             <ImageView fitHeight="60.0" fitWidth="64.0" layoutX="14.0" layoutY="64.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@all_aroundjavafx/assets/userIcon.png" />
+                  <Image url="/Equipa2/Incremento2/GUI/Assets/userIcon.png" />
                </image>
             </ImageView>
             <Label fx:id="label_nomeCliente" layoutX="81.0" layoutY="78.0" text="Nome_Cliente" textFill="#cf5fc8">

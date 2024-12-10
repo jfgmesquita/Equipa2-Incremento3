@@ -28,7 +28,7 @@ public class Login implements Initializable{
 
 		button_login.setOnAction(ae -> {
             Stage stage = (Stage) button_login.getScene().getWindow();
-            System.out.println("teste");
+            System.out.println("Botão Entrar Apertado");
             ScenesController.changeScene(stage, "/Equipa2/Incremento2/GUI/Fxmls/allaround_menucliente.fxml", null, null, null);
         });
 		};
