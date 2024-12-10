@@ -14,11 +14,11 @@
 <?import javafx.scene.paint.Stop?>
 <?import javafx.scene.text.Font?>
 
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="576.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="576.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Equipa2.Incremento2.GUI.Scenes.Registo">
    <children>
       <AnchorPane prefHeight="400.0" prefWidth="602.0" style="-fx-background-color: #9a00b2;">
          <children>
-            <Label layoutX="193.0" layoutY="74.0" style="-fx-background-color: #000000000000;" text="ALL Around" textAlignment="CENTER" underline="true">
+            <Label layoutX="193.0" layoutY="74.0" text="ALL Around" textAlignment="CENTER" underline="true">
                <textFill>
                   <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
                      <stops>
