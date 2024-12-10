@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.ColorAdjust?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.RadialGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.text.Font?>
+
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="576.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <AnchorPane prefHeight="400.0" prefWidth="602.0" style="-fx-background-color: #9a00b2;">
+         <children>
+            <Label layoutX="193.0" layoutY="74.0" style="-fx-background-color: #000000000000;" text="ALL Around" textAlignment="CENTER" underline="true">
+               <textFill>
+                  <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
+                     <stops>
+                        <Stop>
+                           <color>
+                              <Color red="1.0" green="1.0" blue="1.0" />
+                           </color>
+                        </Stop>
+                        <Stop offset="1.0">
+                           <color>
+                              <Color red="1.0" green="1.0" blue="1.0" />
+                           </color>
+                        </Stop>
+                     </stops>
+                  </RadialGradient>
+               </textFill>
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="37.0" />
+               </font>
+               <effect>
+                  <ColorAdjust brightness="1.0" />
+               </effect>
+            </Label>
+            <Label layoutX="72.0" layoutY="194.0" text="Email">
+               <effect>
+                  <ColorAdjust brightness="1.0" />
+               </effect>
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="72.0" layoutY="249.0" text="Password">
+               <effect>
+                  <ColorAdjust brightness="1.0" />
+               </effect>
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="14.0" />
+               </font>
+            </Label>
+            <TextField id="tf_email" fx:id="tf_email" layoutX="72.0" layoutY="212.0" prefHeight="26.0" prefWidth="455.0" promptText="insira seu email" style="-fx-background-color: WHITE; -fx-border-color: black;">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="12.0" />
+               </font>
+            </TextField>
+            <Button id="button_login" fx:id="button_finalizarRegisto" layoutX="270.0" layoutY="490.0" mnemonicParsing="false" style="-fx-cursor: hand; -fx-background-color: #5079f4;" text="Registar" textFill="WHITE" />
+            <PasswordField fx:id="tf_password" layoutX="72.0" layoutY="267.0" prefHeight="26.0" prefWidth="455.0" promptText="insira sua password" style="-fx-background-color: white; -fx-border-color: black;">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="12.0" />
+               </font>
+            </PasswordField>
+            <Label layoutX="72.0" layoutY="139.0" text="Nome">
+               <effect>
+                  <ColorAdjust brightness="1.0" />
+               </effect>
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="14.0" />
+               </font>
+            </Label>
+            <TextField id="tf_email" fx:id="tf_nome" layoutX="72.0" layoutY="157.0" prefHeight="26.0" prefWidth="455.0" promptText="insira seu nome" style="-fx-background-color: WHITE; -fx-border-color: black;">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="12.0" />
+               </font>
+            </TextField>
+            <Label layoutX="72.0" layoutY="303.0" text="Morada">
+               <effect>
+                  <ColorAdjust brightness="1.0" />
+               </effect>
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="14.0" />
+               </font>
+            </Label>
+            <TextField id="tf_email" fx:id="tf_morada" layoutX="72.0" layoutY="321.0" prefHeight="44.0" prefWidth="455.0" promptText="insira sua morada" style="-fx-background-color: WHITE; -fx-border-color: black;">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="12.0" />
+               </font>
+            </TextField>
+            <ChoiceBox fx:id="choiceBox_metodoPagamento" layoutX="72.0" layoutY="428.0" prefHeight="26.0" prefWidth="455.0" />
+            <Label layoutX="72.0" layoutY="409.0" text="Método de Pagamento">
+               <effect>
+                  <ColorAdjust brightness="1.0" />
+               </effect>
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="180.0" layoutY="528.0" text="Já possui uma conta?">
+               <effect>
+                  <ColorAdjust brightness="1.0" />
+               </effect>
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="14.0" />
+               </font>
+            </Label>
+            <Button id="button_login" fx:id="button_voltarLogin" layoutX="329.0" layoutY="523.0" mnemonicParsing="false" style="-fx-cursor: hand; -fx-background-color: transparent;" text="Login" textFill="#67ccff" underline="true">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="14.0" />
+               </font>
+            </Button>
+            <RadioButton fx:id="rb_cliente" layoutX="72.0" layoutY="376.0" mnemonicParsing="false" prefHeight="22.0" prefWidth="104.0" text="Cliente" textFill="WHITE">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="16.0" />
+               </font>
+            </RadioButton>
+            <RadioButton fx:id="rb_profissional" layoutX="180.0" layoutY="376.0" mnemonicParsing="false" prefHeight="22.0" prefWidth="140.0" text="Profissional" textFill="WHITE">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="16.0" />
+               </font>
+            </RadioButton>
+         </children>
+      </AnchorPane>
+   </children>
+</HBox>
