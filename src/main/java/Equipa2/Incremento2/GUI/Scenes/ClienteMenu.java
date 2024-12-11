@@ -10,8 +10,9 @@ import java.util.ResourceBundle;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.stereotype.Component;
 
-
+@Component
 public class ClienteMenu implements Initializable {
     @Autowired
 	public ConfigurableApplicationContext applicationContext;
