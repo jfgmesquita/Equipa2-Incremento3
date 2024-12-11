@@ -108,7 +108,6 @@ public class UtilizadorController {
      */
     @PostMapping
     public ResponseEntity<?> createUtilizador(@RequestBody UtilizadorDTO utilizador){
-
         if(utilizadorService.findByEmail(utilizador.getEmail()) != null){
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Já existe um utilizador registado com este email.");
         }
@@ -123,7 +122,6 @@ public class UtilizadorController {
             cliente.setFormaDePagamento(utilizador.getFormaDePagamento());
             utilizadorService.saveCliente(cliente);
             return ResponseEntity.ok().body(new UtilizadorDTO(
-                    cliente.getId(),
                     cliente.getNome(),
                     cliente.getEmail(),
                     cliente.getPassword(),

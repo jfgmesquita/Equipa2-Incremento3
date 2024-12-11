@@ -7,14 +7,21 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+import org.springframework.context.ConfigurableApplicationContext;
+
 
 public class ScenesController {
 
-    public static void changeScene(Stage stage, String fxmlFile, String titulo, String email, String password) {
+    
+    public static void changeScene(Stage stage, String fxmlFile, String titulo, String email, String password, ConfigurableApplicationContext applicationContext) {
         Parent root = null;
         
         try{
-        root = FXMLLoader.load(ScenesController.class.getResource(fxmlFile));
+        //root = FXMLLoader.load(ScenesController.class.getResource(fxmlFile));
+        FXMLLoader loader = new FXMLLoader(ScenesController.class.getResource(fxmlFile));
+		loader.setControllerFactory(applicationContext::getBean);
+		root = loader.load();
+
         } catch(IOException e){
             e.printStackTrace();
         }

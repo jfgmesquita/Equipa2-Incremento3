@@ -73,8 +73,7 @@ public class UtilizadorDTO {
      * @param formaDePagamento a forma de pagamento do cliente
      * @return um objeto UtilizadorDTO
      */
-    public UtilizadorDTO(UUID id, String nome, String email, String password, String morada, UserType userType, MetodoPagamento formaDePagamento){
-        this.id = id;
+    public UtilizadorDTO(String nome, String email, String password, String morada, UserType userType, MetodoPagamento formaDePagamento){
         this.nome = nome;
         this.email = email;
         this.password = password;
