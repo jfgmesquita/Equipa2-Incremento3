@@ -24,6 +24,11 @@ public class ClienteMenu implements Initializable {
     @FXML
     private Label label_nomeCliente;
 
+    public void setClienteInfo(String nome, String email) {
+        label_nomeCliente.setText(nome);
+        label_emailCliente.setText(email);
+    }
+
     @FXML
 	public void initialize(URL location, ResourceBundle resources){
 
