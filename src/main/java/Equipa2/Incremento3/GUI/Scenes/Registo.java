@@ -32,6 +32,9 @@ public class Registo implements Initializable{
     private ChoiceBox<String> choiceBox_metodoPagamento;
 
     @FXML
+    private ChoiceBox<String> choiceBox_servicos;
+
+    @FXML
     private RadioButton rb_cliente;
 
     @FXML
@@ -45,6 +48,9 @@ public class Registo implements Initializable{
 
     @FXML
     private TextField tf_nome;
+
+    @FXML
+    private TextField tf_experiencia;
 
     @FXML
     private PasswordField tf_password;
@@ -62,11 +68,23 @@ public class Registo implements Initializable{
         rb_cliente.setSelected(true);
 
         choiceBox_metodoPagamento.getItems().addAll("MBWAY", "CARTAO_DE_CREDITO","TRANSFERENCIA_BANCARIA","PAYPAL");
+        //Solução Temporaria
+        choiceBox_servicos.getItems().addAll("COZINHA");
 
         button_voltarLogin.setOnAction(ae -> {
             Stage stage = (Stage) button_voltarLogin.getScene().getWindow();
             System.out.println("Botão VoltarLogin Apertado");
             ScenesController.changeScene(stage, "/Equipa2/Incremento3/GUI/Fxmls/allaround.fxml", null, null, null);
+        });
+
+        rb_profissional.setOnAction(ae -> {
+            tf_experiencia.setDisable(false);
+            choiceBox_servicos.setDisable(false);
+        });
+
+        rb_cliente.setOnAction(ae -> {
+            tf_experiencia.setDisable(true);
+            choiceBox_servicos.setDisable(true);
         });
 
         button_finalizarRegisto.setOnAction(ae -> {
@@ -82,12 +100,23 @@ public class Registo implements Initializable{
             json.put("userType", ((RadioButton) toggleGroup.getSelectedToggle()).getText().toUpperCase());
             json.put("formaDePagamento", choiceBox_metodoPagamento.getValue());
 
-            json.put("especialidade", (Servicos) null);
-            json.put("experiencia", 0);
             json.put("codigo", 0);
+
+            //Cliente Selecionado
+            if(((RadioButton) toggleGroup.getSelectedToggle()).getText().equals("Cliente")){
+                json.put("especialidade", (Servicos) null);
+                json.put("experiencia", 0);
+            } 
+            else{
+            //Profissional Selecionado
+                int experiencia;
+                json.put("especialidade", choiceBox_servicos.getValue());
+                json.put("experiencia", Integer.parseInt(tf_experiencia.getText()));
+            }
 
             String response = apiService.postData("/utilizadores", json.toString());
             ScenesController.changeScene(stage, "/Equipa2/Incremento3/GUI/Fxmls/allaround.fxml", null, null, null);
+            
             }catch(Exception e){
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setContentText("Não foi possível realizar o registo, verifique se não há campo em branco.");
