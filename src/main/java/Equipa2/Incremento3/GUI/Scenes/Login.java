@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -53,19 +54,20 @@ public class Login implements Initializable {
                 String emailCliente = jsonResponse.getString("email");
 
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/Equipa2/Incremento3/GUI/Fxmls/allaround_menucliente.fxml"));
-                Parent root = loader.load();
 
                 ClienteMenu clienteMenuController = loader.getController();
                 clienteMenuController.setClienteInfo(nomeCliente, emailCliente);
 
-                Scene scene = new Scene(root);
-                stage.setScene(scene);
-                stage.show();
+                ScenesController.changeScene(stage, "/Equipa2/Incremento3/GUI/Fxmls/allaround_menucliente.fxml", null, null, null);
                 //
 
                 //System.out.println(response);
                 //ScenesController.changeScene(stage, "/Equipa2/Incremento3/GUI/Fxmls/allaround_menucliente.fxml", null, null, null);
             } catch (Exception e) {
+
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setContentText("As credênciais estão erradas, tente novamente.");
+                alert.show();
                 e.printStackTrace();
                 // Handle the error and show a message to the user
             }
