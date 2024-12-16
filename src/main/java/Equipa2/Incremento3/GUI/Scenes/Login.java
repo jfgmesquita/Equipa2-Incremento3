@@ -52,12 +52,14 @@ public class Login implements Initializable {
                 JSONObject jsonResponse = new JSONObject(response);
                 String nomeCliente = jsonResponse.getString("nome");
                 String emailCliente = jsonResponse.getString("email");
+                String tipoCliente = jsonResponse.getString("userType");
 
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/Equipa2/Incremento3/GUI/Fxmls/allaround_menucliente.fxml"));
 
                 Parent root = loader.load();
                 ClienteMenu clienteMenuController = loader.getController();
-                clienteMenuController.setClienteInfo(nomeCliente, emailCliente);
+                clienteMenuController.setClienteInfo(nomeCliente, emailCliente, tipoCliente);
+                ScenesController.setUtilizador(emailCliente);
 
                 Scene scene = new Scene(root);
                 stage.setScene(scene);
@@ -77,9 +79,8 @@ public class Login implements Initializable {
         });
 
         button_telaRegistar.setOnAction(ae -> {
-            Stage stage = (Stage) button_telaRegistar.getScene().getWindow();
             System.out.println("Botão Registar Apertado");
-            ScenesController.changeScene(stage, "/Equipa2/Incremento3/GUI/Fxmls/allaround_menuRegisto.fxml", null, null, null);
+            ScenesController.changeScene("/Equipa2/Incremento3/GUI/Fxmls/allaround_menuRegisto.fxml", null, null, null);
         });
 
 		}
