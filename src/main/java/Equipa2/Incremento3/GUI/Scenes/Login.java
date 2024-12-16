@@ -54,12 +54,13 @@ public class Login implements Initializable {
                 String emailCliente = jsonResponse.getString("email");
                 String tipoCliente = jsonResponse.getString("userType");
 
+                ScenesController.setUtilizador(emailCliente);
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/Equipa2/Incremento3/GUI/Fxmls/allaround_menucliente.fxml"));
 
                 Parent root = loader.load();
                 ClienteMenu clienteMenuController = loader.getController();
                 clienteMenuController.setClienteInfo(nomeCliente, emailCliente, tipoCliente);
-                ScenesController.setUtilizador(emailCliente);
+                
 
                 Scene scene = new Scene(root);
                 stage.setScene(scene);
