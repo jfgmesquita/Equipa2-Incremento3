@@ -23,7 +23,7 @@
                   </Label>
                </children>
             </Pane>
-            <Button fx:id="button_adicionarServico" layoutX="279.0" layoutY="367.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="46.0" style="-fx-cursor: hand; -fx-background-color: #9a00b2;" text="+" textFill="WHITE" underline="true">
+            <Button fx:id="button_adicionarSolicitacao" layoutX="277.0" layoutY="366.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="46.0" style="-fx-cursor: hand; -fx-background-color: #9a00b2;" text="+" textFill="WHITE" underline="true">
                <font>
                   <Font size="17.0" />
                </font>
@@ -33,7 +33,7 @@
                 <TableColumn fx:id="tc_tipo" prefWidth="83.99996644258499" text="Tipo" />
                 <TableColumn fx:id="tc_descricao" prefWidth="140.00006103515625" text="Descrição" />
                   <TableColumn fx:id="tc_valor" prefWidth="54.39997863769531" text="Valor" />
-                  <TableColumn fx:id="tc_profissional" prefWidth="108.79998779296875" text="Profissional" />
+                  <TableColumn fx:id="tc_profissional" prefWidth="108.79998779296875" text="Cliente" />
                   <TableColumn fx:id="tc_status" prefWidth="108.0" text="Status" />
                   <TableColumn fx:id="tc_data" prefWidth="112.800048828125" text="data" />
               </columns>
@@ -43,14 +43,32 @@
                   <Font size="14.0" />
                </font>
             </Button>
-            <AnchorPane fx:id="anchorpane_servico" layoutY="52.0" prefHeight="354.0" prefWidth="604.0" style="-fx-background-color: white;" visible="false">
+            <AnchorPane fx:id="anchorpane_servico" layoutY="52.0" prefHeight="354.0" prefWidth="604.0" style="-fx-background-color: white;">
                <children>
                   <TextField fx:id="tf_descServico" layoutX="29.0" layoutY="49.0" prefHeight="38.0" prefWidth="545.0" promptText="Insira a descrição do Serviço" />
                   <TextField fx:id="tf_valorHoraServico" layoutX="29.0" layoutY="116.0" prefHeight="38.0" prefWidth="545.0" promptText="Insira o valor por Hora" />
                   <TextField fx:id="tf_tipoServico" layoutX="29.0" layoutY="178.0" prefHeight="38.0" prefWidth="545.0" promptText="Insira o tipo de Serviço" />
-                  <Button fx:id="button_concluirServico" layoutX="272.0" layoutY="304.0" mnemonicParsing="false" text="Concluir" />
+                  <Button fx:id="button_concluirSolicitacao" layoutX="270.0" layoutY="320.0" mnemonicParsing="false" text="Solicitar" />
+                  <TableView fx:id="table_servicos" prefHeight="314.0" prefWidth="600.0">
+                     <columns>
+                        <TableColumn fx:id="tc_tipo1" prefWidth="119.19997864961624" text="Tipo" />
+                        <TableColumn fx:id="tc_descricao1" prefWidth="281.6000518798828" text="Descrição" />
+                        <TableColumn fx:id="tc_valor1" prefWidth="87.199951171875" text="Valor" />
+                        <TableColumn fx:id="tc_profissional1" prefWidth="115.20001220703125" text="Profissional" />
+                     </columns>
+                  </TableView>
                </children>
             </AnchorPane>
+            <Button fx:id="button_recusar" layoutX="173.0" layoutY="365.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="103.0" style="-fx-cursor: hand; -fx-background-color: red;" text="RECUSAR" textFill="WHITE" underline="true" visible="false">
+               <font>
+                  <Font size="17.0" />
+               </font>
+            </Button>
+            <Button fx:id="button_aceitar" layoutX="323.0" layoutY="365.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="103.0" style="-fx-cursor: hand; -fx-background-color: green;" text="ACEITAR" textFill="WHITE" underline="true" visible="false">
+               <font>
+                  <Font size="17.0" />
+               </font>
+            </Button>
          </children>
       </AnchorPane>
    </children>

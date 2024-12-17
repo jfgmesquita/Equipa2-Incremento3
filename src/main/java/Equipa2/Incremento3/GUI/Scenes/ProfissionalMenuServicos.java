@@ -43,6 +43,9 @@ public class ProfissionalMenuServicos implements Initializable {
     private Button button_voltar;
 
     @FXML
+    private Button button_voltarPraTabela;
+
+    @FXML
     private TableColumn<ServicoDTO, String> tc_descricao;
 
     @FXML
@@ -112,7 +115,6 @@ public class ProfissionalMenuServicos implements Initializable {
        
         //JSONArray servicosArray = ScenesController.getUtilizador().getJSONArray("servicos");
         //String nomeProfissional = ScenesController.getUtilizador().getString("nome");
-
        
 
         button_adicionarServico.setOnAction(ae ->{
@@ -131,6 +133,10 @@ public class ProfissionalMenuServicos implements Initializable {
             tf_descServico.setText("");
             tf_tipoServico.setText("");
             tf_valorHoraServico.setText("");
+            anchorpane_servico.setVisible(false);
+        });
+
+        button_voltarPraTabela.setOnAction(ae -> {
             anchorpane_servico.setVisible(false);
         });
 
