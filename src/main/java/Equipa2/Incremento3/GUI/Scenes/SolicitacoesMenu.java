@@ -1,19 +1,25 @@
 package Equipa2.Incremento3.GUI.Scenes;
 
-
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ResourceBundle;
 import java.util.UUID;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import Equipa2.Incremento3.models.Pagamento;
 import Equipa2.Incremento3.models.Profissional;
 import Equipa2.Incremento3.models.Servico;
+import Equipa2.Incremento3.models.dto.PagamentoDTO;
 import Equipa2.Incremento3.models.dto.ServicoDTO;
 import Equipa2.Incremento3.models.dto.SolicitacaoDTO;
 import Equipa2.Incremento3.models.dto.UtilizadorDTO;
@@ -131,7 +137,6 @@ public class SolicitacoesMenu implements Initializable {
             e.printStackTrace();
         }
         final String tipoUti = utilizador.getString("userType");
-        //
         //Ler Solicitacoes da BD
         tc_status.setCellValueFactory(new PropertyValueFactory<SolicitacaoDTO, String>("status"));
         tc_data.setCellValueFactory(new PropertyValueFactory<SolicitacaoDTO, String>("data"));
@@ -177,6 +182,7 @@ public class SolicitacoesMenu implements Initializable {
                 JSONObject pro = servi.getJSONObject("profissional");
                 
                 SolicitacaoDTO solicitacaoDTO = new SolicitacaoDTO();
+                solicitacaoDTO.setId(UUID.fromString(objeto.getString("id")));
                 solicitacaoDTO.setData(objeto.getString("data"));
                 solicitacaoDTO.setStatus(StatusServico.valueOf(objeto.getString("status")));
 
@@ -217,6 +223,7 @@ public class SolicitacoesMenu implements Initializable {
                 JSONObject pro = objeto.getJSONObject("profissional");
                 
                 ServicoDTO servico = new ServicoDTO();
+                servico.setId(UUID.fromString(objeto.getString("id")));
                 servico.setDescricao(objeto.getString("descricao"));
                 servico.setValorHora(objeto.getDouble("valorHora"));
                 servico.setTipo(Servicos.valueOf(objeto.getString("tipo")));
@@ -264,15 +271,67 @@ public class SolicitacoesMenu implements Initializable {
 
         button_concluirSolicitacao.setOnAction(ae ->{
             ServicoDTO servicoDTO = table_servicos.getSelectionModel().getSelectedItem();
+            if (servicoDTO == null || servicoDTO.getId() == null) {
+                System.out.println("Erro: Serviço não selecionado ou ID do serviço é nulo.");
+                return;
+            }
+
             SolicitacaoDTO solicitacaoDTO = new SolicitacaoDTO();
             solicitacaoDTO.setServico(servicoDTO);
             solicitacaoDTO.setStatus(StatusServico.PENDENTE);
-            
-            String data = date.getValue() + " " + tf_hora.getText();
-            solicitacaoDTO.setData(data);
+
+            // Formatar a data corretamente
+
+            LocalDate localDate = date.getValue();
+            LocalTime localTime = LocalTime.parse(tf_hora.getText());
+            LocalDateTime localDateTime = LocalDateTime.of(localDate, localTime);
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+            String formattedDate = localDateTime.format(dtf);
+
+            System.out.println("Data fornecida: " + formattedDate);
+
+            try {
+                LocalDateTime.parse(formattedDate, dtf);
+            } catch (DateTimeParseException e) {
+                System.out.println("Erro no formato da data. Use 'dd-MM-yyyy HH:mm'.");
+                e.printStackTrace();
+                return;
+            }
+            solicitacaoDTO.setData(formattedDate);
+
+            // Obter as informações do cliente a partir da API
+            ApiService apiService1 = new ApiService();
+            Gson gson = new Gson();
+            UtilizadorDTO cliente = null;
+
+            try {
+                UUID utilizadorID = ScenesController.getUtilizadorID();
+                String response = apiService1.getData("/utilizadores", utilizadorID);
+                cliente = gson.fromJson(response, UtilizadorDTO.class);
+            } catch (IOException | InterruptedException | JsonSyntaxException e) {
+                e.printStackTrace();
+            }
+
+            // Adicionar o cliente à solicitação
+            if (cliente != null) {
+                solicitacaoDTO.setCliente(cliente);
+            }
+
+            // Criar um objeto Pagamento
+            // PagamentoDTO pagamento = new PagamentoDTO();
+            // solicitacaoDTO.setPagamento(pagamento);
 
             listaSolicitacoes.add(solicitacaoDTO);
-            
+
+            // Enviar a solicitação para a API para persistir
+            String json = gson.toJson(solicitacaoDTO);
+            System.out.println("JSON enviado: " + json);
+
+            try {
+                apiService.postData("/solicitacoes", json);
+            } catch (IOException | InterruptedException e) {
+                e.printStackTrace();
+            }
 
             anchorpane_servico.setVisible(false);
             table_solicitacoes.setVisible(true);
@@ -281,6 +340,44 @@ public class SolicitacoesMenu implements Initializable {
 
         button_voltar.setOnAction(ae -> {
             ScenesController.changeScene("/Equipa2/Incremento3/GUI/Fxmls/allaround_menucliente.fxml");
+        });
+
+        button_aceitar.setOnAction(ae -> {
+            SolicitacaoDTO solicitacao = table_solicitacoes.getSelectionModel().getSelectedItem();
+            if(solicitacao == null || solicitacao.getId() == null){
+                System.out.println("Erro: Solicitação não selecionada ou ID da solicitação é nulo.");
+                return;
+            }
+
+            solicitacao.setStatus(StatusServico.ACEITE);
+            String json = new Gson().toJson(solicitacao);
+            System.out.println("JSON enviado: " + json);
+            try {
+                String response = apiService.putData("/solicitacoes/" + solicitacao.getId(), json);
+                System.out.println("Resposta da API: " + response);
+            } catch (IOException | InterruptedException e) {
+                e.printStackTrace();
+            }
+            table_solicitacoes.refresh();
+        });
+
+        button_recusar.setOnAction(ae -> {
+            SolicitacaoDTO solicitacao = table_solicitacoes.getSelectionModel().getSelectedItem();
+            if(solicitacao == null || solicitacao.getId() == null){
+                System.out.println("Erro: Solicitação não selecionada ou ID da solicitação é nulo.");
+                return;
+            }
+
+            solicitacao.setStatus(StatusServico.CANCELADO);
+            String json = new Gson().toJson(solicitacao);
+            System.out.println("JSON enviado: " + json);
+            try {
+                String response = apiService.putData("/solicitacoes/" + solicitacao.getId(), json);
+                System.out.println("Resposta da API: " + response);
+            } catch (IOException | InterruptedException e) {
+                e.printStackTrace();
+            }
+            table_solicitacoes.refresh();
         });
 
     }

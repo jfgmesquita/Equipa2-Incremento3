@@ -5,6 +5,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.UUID;
 
 public class ApiService {
 
@@ -30,6 +31,21 @@ public class ApiService {
         return response.body();
     }
 
+    public String getData(String endpoint, UUID id) throws IOException, InterruptedException {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(API_URL + endpoint + "/" + id.toString()))
+                .GET()
+                .build();
+
+        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+        if (response.statusCode() != 200) {
+            throw new RuntimeException("HttpResponseCode: " + response.statusCode());
+        }
+
+        return response.body();
+    }
+
     public String postData(String endpoint, String json) throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(API_URL + endpoint))
@@ -40,6 +56,24 @@ public class ApiService {
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
         if (response.statusCode() != 200) {
+            System.out.println("Resposta da API: " + response.body());
+            throw new RuntimeException("HttpResponseCode: " + response.statusCode());
+        }
+
+        return response.body();
+    }
+
+    public String putData(String endpoint, String json) throws IOException, InterruptedException {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(API_URL + endpoint))
+                .header("Content-Type", "application/json")
+                .PUT(HttpRequest.BodyPublishers.ofString(json))
+                .build();
+
+        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+        if (response.statusCode() != 200) {
+            System.out.println("Resposta da API: " + response.body());
             throw new RuntimeException("HttpResponseCode: " + response.statusCode());
         }
 

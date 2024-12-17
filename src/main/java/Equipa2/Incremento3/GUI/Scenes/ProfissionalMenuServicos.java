@@ -98,11 +98,7 @@ public class ProfissionalMenuServicos implements Initializable {
                 profissional.setNome(pro.getString("nome"));
                 servico.setProfissional(profissional);
 
-                
-    
                 listaServicos.add(servico);
-             
-                
             }
             
             table_servicos.setItems(listaServicos);
