@@ -256,30 +256,39 @@ public class SolicitacoesMenu implements Initializable {
         //
 
         table_solicitacoes.setOnMouseClicked(ae -> {
-            System.out.println("teste");
+            
             SolicitacaoDTO solicitacao = table_solicitacoes.getSelectionModel().getSelectedItem();
             if(tipoUti.equals("PROFISSIONAL")){
                 if(solicitacao.getStatus().toString().equals("PENDENTE")){
                     button_recusar.setVisible(true);
                     button_aceitar.setVisible(true);
-                } else if(solicitacao.getStatus().toString().equals("ACEITE")){
+                    button_comecar.setVisible(false);
+                    button_concluir.setVisible(false);
+                    button_cancelar.setVisible(false);
+                }else if(solicitacao.getStatus().toString().equals("ACEITE")){
                     button_comecar.setVisible(true);
                     button_cancelar.setVisible(true);
+                    button_recusar.setVisible(false);
+                    button_aceitar.setVisible(false);
                 }else if(solicitacao.getStatus().toString().equals("ANDAMENTO")){
                     button_cancelar.setVisible(true);
                     button_concluir.setVisible(true);
-                }else
+                    button_recusar.setVisible(false);
+                    button_aceitar.setVisible(false);
+                    button_comecar.setVisible(false);
+                }else if(solicitacao.getStatus().toString().equals("CANCELADO")){
                     button_recusar.setVisible(false);
                     button_aceitar.setVisible(false);
                     button_comecar.setVisible(false);
                     button_cancelar.setVisible(false);
                     button_concluir.setVisible(false);
+                }
                 } else{
                     if(solicitacao.getStatus().toString().equals("PAGAMENTO_PENDENTE")){
                         button_pagar.setVisible(true);
-                    } else{
-                        button_pagar.setVisible(false);
-                    }
+                   } else{
+                       button_pagar.setVisible(false);
+                   }
                 }
         });
 
