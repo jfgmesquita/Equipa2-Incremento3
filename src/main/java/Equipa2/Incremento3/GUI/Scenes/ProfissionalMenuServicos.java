@@ -128,7 +128,7 @@ public class ProfissionalMenuServicos implements Initializable {
         });
 
         button_voltar.setOnAction(ae -> {
-            ScenesController.changeScene("/Equipa2/Incremento3/GUI/Fxmls/allaround_menucliente.fxml", null, null, null);
+            ScenesController.changeScene("/Equipa2/Incremento3/GUI/Fxmls/allaround_menucliente.fxml");
         });
 
     }

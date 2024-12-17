@@ -74,7 +74,7 @@ public class Login implements Initializable {
 
         button_telaRegistar.setOnAction(ae -> {
             System.out.println("Botão Registar Apertado");
-            ScenesController.changeScene("/Equipa2/Incremento3/GUI/Fxmls/allaround_menuRegisto.fxml", null, null, null);
+            ScenesController.changeScene("/Equipa2/Incremento3/GUI/Fxmls/allaround_menuRegisto.fxml");
         });
 
 		}

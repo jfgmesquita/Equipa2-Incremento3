@@ -69,7 +69,7 @@ public class Registo implements Initializable{
 
         button_voltarLogin.setOnAction(ae -> {
             System.out.println("Botão VoltarLogin Apertado");
-            ScenesController.changeScene("/Equipa2/Incremento3/GUI/Fxmls/allaround.fxml", null, null, null);
+            ScenesController.changeScene("/Equipa2/Incremento3/GUI/Fxmls/allaround.fxml");
         });
 
         rb_profissional.setOnAction(ae -> {
@@ -108,7 +108,7 @@ public class Registo implements Initializable{
             }
 
             String response = apiService.postData("/utilizadores", json.toString());
-            ScenesController.changeScene("/Equipa2/Incremento3/GUI/Fxmls/allaround.fxml", null, null, null);
+            ScenesController.changeScene("/Equipa2/Incremento3/GUI/Fxmls/allaround.fxml");
             
             }catch(Exception e){
                 Alert alert = new Alert(Alert.AlertType.ERROR);

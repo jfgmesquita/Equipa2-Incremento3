@@ -65,12 +65,12 @@ public class ClienteMenu implements Initializable {
 
 
     button_servicos.setOnAction(ae -> {
-        ScenesController.changeScene("/Equipa2/Incremento3/GUI/Fxmls/allaround_menuProfissionalServicos.fxml", null, null, null);
+        ScenesController.changeScene("/Equipa2/Incremento3/GUI/Fxmls/allaround_menuProfissionalServicos.fxml");
     });
     
     button_logOut.setOnAction(ae -> {
         ScenesController.setUtilizadorID(null);
-        ScenesController.changeScene("/Equipa2/Incremento3/GUI/Fxmls/allaround.fxml", null, null, null);
+        ScenesController.changeScene("/Equipa2/Incremento3/GUI/Fxmls/allaround.fxml");
     });
     }
     

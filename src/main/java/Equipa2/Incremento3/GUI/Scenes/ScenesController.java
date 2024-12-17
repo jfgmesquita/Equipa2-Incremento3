@@ -18,7 +18,7 @@ public class ScenesController {
     static JSONObject utilizador;
     static UUID utilizadorID;
         
-        public static void changeScene(String fxmlFile, String titulo, String email, String password) {
+        public static void changeScene(String fxmlFile) {
             Parent root = null;
             
             try{
