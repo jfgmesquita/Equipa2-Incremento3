@@ -1,7 +1,5 @@
 package Equipa2.Incremento3.GUI.Scenes;
 
-
-
 import java.io.IOException;
 import java.net.URL;
 
@@ -10,6 +8,7 @@ import java.util.UUID;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import com.google.gson.Gson;
 
 import Equipa2.Incremento3.models.Profissional;
 import Equipa2.Incremento3.models.Servico;
@@ -28,6 +27,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+//import lombok.launch.PatchFixesHider.Util;
 
 public class ProfissionalMenuServicos implements Initializable {
     @FXML
@@ -41,9 +41,6 @@ public class ProfissionalMenuServicos implements Initializable {
 
     @FXML
     private Button button_voltar;
-
-    @FXML
-    private Button button_voltarPraTabela;
 
     @FXML
     private TableColumn<ServicoDTO, String> tc_descricao;
@@ -115,28 +112,53 @@ public class ProfissionalMenuServicos implements Initializable {
        
         //JSONArray servicosArray = ScenesController.getUtilizador().getJSONArray("servicos");
         //String nomeProfissional = ScenesController.getUtilizador().getString("nome");
-       
 
         button_adicionarServico.setOnAction(ae ->{
             anchorpane_servico.setVisible(true);
         });
 
         button_concluirServico.setOnAction(ae ->{
+            // Criar um novo serviço
             ServicoDTO servico = new ServicoDTO();
             servico.setDescricao(tf_descServico.getText());
             servico.setTipo(Servicos.valueOf(tf_tipoServico.getText()));
             Double valor = Double.parseDouble(tf_valorHoraServico.getText());
             servico.setValorHora(valor);
-            listaServicos.add(servico);
-            //falta adicionar à base de dados
 
+            // Obter as informações do profissional a partir da API
+            ApiService apiService1 = new ApiService();
+            Gson gson = new Gson();
+            UtilizadorDTO profissional = null;
+            
+            // Obter o profissional
+            try {
+                String response = apiService1.getData("/utilizadores/" + ScenesController.getUtilizadorID());
+                JSONObject profissionalJson = new JSONObject(response);
+                profissional = gson.fromJson(profissionalJson.toString(), UtilizadorDTO.class);
+            } catch (IOException | InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            // Adicionar o profissional ao serviço
+            if(profissional != null){
+                servico.setProfissional(profissional);
+            }
+            
+            // Adicionar o serviço à lista de serviços
+            listaServicos.add(servico);
+            
+            // Enviar o serviço para a API para persistir
+            String json = gson.toJson(servico);
+            try {
+                apiService1.postData("/servicos", json);
+            } catch (IOException | InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            // Limpar os campos
             tf_descServico.setText("");
             tf_tipoServico.setText("");
             tf_valorHoraServico.setText("");
-            anchorpane_servico.setVisible(false);
-        });
-
-        button_voltarPraTabela.setOnAction(ae -> {
             anchorpane_servico.setVisible(false);
         });
 
