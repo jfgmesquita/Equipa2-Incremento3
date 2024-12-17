@@ -72,6 +72,12 @@ public class ClienteMenu implements Initializable {
         ScenesController.setUtilizadorID(null);
         ScenesController.changeScene("/Equipa2/Incremento3/GUI/Fxmls/allaround.fxml");
     });
+
+    button_verSolicitacoes.setOnAction(ae -> {
+        ScenesController.changeScene("/Equipa2/Incremento3/GUI/Fxmls/allaround_menuSolicitacoes.fxml");
+    });
+
     }
+    
     
 }
