@@ -26,7 +26,8 @@ public class SolicitacaoDTO {
 
     private ServicoDTO servico;
 
-    private String data;
+    private PagamentoDTO pagamento;
 
+    private String data;
 
 }
