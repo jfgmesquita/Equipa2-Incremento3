@@ -89,6 +89,11 @@
                   <Font size="17.0" />
                </font>
             </Button>
+            <Button fx:id="button_pagar" layoutX="330.0" layoutY="365.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="114.0" style="-fx-cursor: hand; -fx-background-color: green;" text="PAGAR" textFill="WHITE" underline="true" visible="false">
+               <font>
+                  <Font size="17.0" />
+               </font>
+            </Button>
          </children>
       </AnchorPane>
    </children>
