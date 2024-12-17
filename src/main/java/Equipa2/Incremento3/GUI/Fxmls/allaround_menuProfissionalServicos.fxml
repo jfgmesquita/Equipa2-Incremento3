@@ -47,7 +47,7 @@
                   <TextField fx:id="tf_valorHoraServico" layoutX="29.0" layoutY="116.0" prefHeight="38.0" prefWidth="545.0" promptText="Insira o valor por Hora" />
                   <TextField fx:id="tf_tipoServico" layoutX="29.0" layoutY="178.0" prefHeight="38.0" prefWidth="545.0" promptText="Insira o tipo de Serviço" />
                   <Button fx:id="button_concluirServico" layoutX="272.0" layoutY="304.0" mnemonicParsing="false" text="Concluir" />
-                  <Button fx:id="button_voltarPraTabela" layoutX="533.0" layoutY="315.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="72.0" style="-fx-background-color: transparent; -fx-cursor: hand;" text="voltar" textFill="#5788cc" underline="true" />
+                  <Button fx:id="button_voltarPraTabela" layoutX="533.0" layoutY="315.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="72.0" style="-fx-background-color: transparent;" text="voltar" textFill="#5788cc" underline="true" />
                </children>
             </AnchorPane>
          </children>
