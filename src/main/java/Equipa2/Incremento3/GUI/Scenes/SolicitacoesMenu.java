@@ -66,6 +66,18 @@ public class SolicitacoesMenu implements Initializable {
     private Button button_voltarPraSolicitacao;
 
     @FXML
+    private Button button_cancelar;
+
+    @FXML
+    private Button button_comecar;
+
+    @FXML
+    private Button button_concluir;
+
+    @FXML
+    private Button button_pagar;
+
+    @FXML
     private TableColumn<SolicitacaoDTO, String> tc_descricao;
 
     @FXML
@@ -250,11 +262,25 @@ public class SolicitacoesMenu implements Initializable {
                 if(solicitacao.getStatus().toString().equals("PENDENTE")){
                     button_recusar.setVisible(true);
                     button_aceitar.setVisible(true);
-                } else{
+                } else if(solicitacao.getStatus().toString().equals("ACEITE")){
+                    button_comecar.setVisible(true);
+                    button_cancelar.setVisible(true);
+                }else if(solicitacao.getStatus().toString().equals("ANDAMENTO")){
+                    button_cancelar.setVisible(true);
+                    button_concluir.setVisible(true);
+                }else
                     button_recusar.setVisible(false);
                     button_aceitar.setVisible(false);
+                    button_comecar.setVisible(false);
+                    button_cancelar.setVisible(false);
+                    button_concluir.setVisible(false);
+                } else{
+                    if(solicitacao.getStatus().toString().equals("PAGAMENTO_PENDENTE")){
+                        button_pagar.setVisible(true);
+                    } else{
+                        button_pagar.setVisible(false);
+                    }
                 }
-            }
         });
 
         button_voltarPraSolicitacao.setOnAction(ae -> {
