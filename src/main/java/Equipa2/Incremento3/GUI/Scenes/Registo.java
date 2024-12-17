@@ -9,11 +9,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
-import javafx.stage.Stage;
-import Equipa2.Incremento3.models.dto.UtilizadorDTO;
-import Equipa2.Incremento3.models.enums.MetodoPagamento;
 import Equipa2.Incremento3.models.enums.Servicos;
-import Equipa2.Incremento3.models.enums.UserType;
 import Equipa2.Incremento3.services.ApiService;
 
 import java.net.URL;
@@ -72,9 +68,8 @@ public class Registo implements Initializable{
         choiceBox_servicos.getItems().addAll("COZINHA");
 
         button_voltarLogin.setOnAction(ae -> {
-            Stage stage = (Stage) button_voltarLogin.getScene().getWindow();
             System.out.println("Botão VoltarLogin Apertado");
-            ScenesController.changeScene(stage, "/Equipa2/Incremento3/GUI/Fxmls/allaround.fxml", null, null, null);
+            ScenesController.changeScene("/Equipa2/Incremento3/GUI/Fxmls/allaround.fxml");
         });
 
         rb_profissional.setOnAction(ae -> {
@@ -88,7 +83,6 @@ public class Registo implements Initializable{
         });
 
         button_finalizarRegisto.setOnAction(ae -> {
-            Stage stage = (Stage) button_finalizarRegisto.getScene().getWindow();
             System.out.println("Botão Finalizar Registo Apertado");
             //Dados
             try{
@@ -109,13 +103,12 @@ public class Registo implements Initializable{
             } 
             else{
             //Profissional Selecionado
-                int experiencia;
                 json.put("especialidade", choiceBox_servicos.getValue());
                 json.put("experiencia", Integer.parseInt(tf_experiencia.getText()));
             }
 
             String response = apiService.postData("/utilizadores", json.toString());
-            ScenesController.changeScene(stage, "/Equipa2/Incremento3/GUI/Fxmls/allaround.fxml", null, null, null);
+            ScenesController.changeScene("/Equipa2/Incremento3/GUI/Fxmls/allaround.fxml");
             
             }catch(Exception e){
                 Alert alert = new Alert(Alert.AlertType.ERROR);

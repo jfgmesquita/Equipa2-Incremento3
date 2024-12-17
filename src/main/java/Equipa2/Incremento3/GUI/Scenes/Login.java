@@ -14,6 +14,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import org.json.JSONObject;
+import java.util.UUID;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -42,44 +43,38 @@ public class Login implements Initializable {
             System.out.println("Botão \"Entrar\" apertado.");
 
             try {
+                //Login
                 JSONObject json = new JSONObject();
                 json.put("email", tf_email.getText());
                 json.put("password", tf_password.getText());
 
                 String response = apiService.postData("/auth", json.toString());
-
-                //
+               
                 JSONObject jsonResponse = new JSONObject(response);
-                String nomeCliente = jsonResponse.getString("nome");
-                String emailCliente = jsonResponse.getString("email");
-
+                UUID idCliente = UUID.fromString(jsonResponse.getString("id"));
+                ScenesController.setUtilizadorID(idCliente);
+                //
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/Equipa2/Incremento3/GUI/Fxmls/allaround_menucliente.fxml"));
 
                 Parent root = loader.load();
-                ClienteMenu clienteMenuController = loader.getController();
-                clienteMenuController.setClienteInfo(nomeCliente, emailCliente);
-
+    
                 Scene scene = new Scene(root);
                 stage.setScene(scene);
                 stage.show();
                 //
 
-                //System.out.println(response);
-                //ScenesController.changeScene(stage, "/Equipa2/Incremento3/GUI/Fxmls/allaround_menucliente.fxml", null, null, null);
             } catch (Exception e) {
-
+                //Alerta de falha no Login
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setContentText("As credênciais estão erradas, tente novamente.");
                 alert.show();
                 e.printStackTrace();
-                // Handle the error and show a message to the user
             }
         });
 
         button_telaRegistar.setOnAction(ae -> {
-            Stage stage = (Stage) button_telaRegistar.getScene().getWindow();
             System.out.println("Botão Registar Apertado");
-            ScenesController.changeScene(stage, "/Equipa2/Incremento3/GUI/Fxmls/allaround_menuRegisto.fxml", null, null, null);
+            ScenesController.changeScene("/Equipa2/Incremento3/GUI/Fxmls/allaround_menuRegisto.fxml");
         });
 
 		}
