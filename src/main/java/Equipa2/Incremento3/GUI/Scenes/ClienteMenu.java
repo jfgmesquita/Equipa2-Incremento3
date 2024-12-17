@@ -4,10 +4,15 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import org.json.JSONException;
 import org.json.JSONObject;
+
+import Equipa2.Incremento3.services.ApiService;
 
 public class ClienteMenu implements Initializable {
     
@@ -44,11 +49,19 @@ public class ClienteMenu implements Initializable {
     @FXML
 	public void initialize(URL location, ResourceBundle resources){
     
-    JSONObject utilizador = ScenesController.getUtilizador();
-    String nome = utilizador.getString("nome");
-    String email = utilizador.getString("email");
-    String tipo = utilizador.getString("userType");
-    setClienteInfo(nome, email, tipo);
+    ApiService apiService = new ApiService();
+    JSONObject utilizador;
+    try {
+        utilizador = new JSONObject(apiService.getData("/utilizadores/" + ScenesController.getUtilizadorID()));
+        String nome = utilizador.getString("nome");
+        String email = utilizador.getString("email");
+        String tipo = utilizador.getString("userType");
+        setClienteInfo(nome, email, tipo);
+    } catch (Exception e) {
+        
+        e.printStackTrace();
+    } 
+
 
 
     button_servicos.setOnAction(ae -> {
@@ -56,6 +69,7 @@ public class ClienteMenu implements Initializable {
     });
     
     button_logOut.setOnAction(ae -> {
+        ScenesController.setUtilizadorID(null);
         ScenesController.changeScene("/Equipa2/Incremento3/GUI/Fxmls/allaround.fxml", null, null, null);
     });
     }

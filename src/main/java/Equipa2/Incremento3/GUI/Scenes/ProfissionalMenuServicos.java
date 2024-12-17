@@ -2,16 +2,21 @@ package Equipa2.Incremento3.GUI.Scenes;
 
 
 
+import java.io.IOException;
 import java.net.URL;
 
 import java.util.ResourceBundle;
+import java.util.UUID;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import Equipa2.Incremento3.models.Profissional;
 import Equipa2.Incremento3.models.Servico;
+import Equipa2.Incremento3.models.dto.ServicoDTO;
+import Equipa2.Incremento3.models.dto.UtilizadorDTO;
 import Equipa2.Incremento3.models.enums.Servicos;
+import Equipa2.Incremento3.services.ApiService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -37,19 +42,19 @@ public class ProfissionalMenuServicos implements Initializable {
     private Button button_voltar;
 
     @FXML
-    private TableColumn<Servico, String> tc_descricao;
+    private TableColumn<ServicoDTO, String> tc_descricao;
 
     @FXML
-    private TableColumn<Servico, String> tc_profissional;
+    private TableColumn<ServicoDTO, String> tc_profissional;
 
     @FXML
-    private TableColumn<Servico, String> tc_tipo;
+    private TableColumn<ServicoDTO, String> tc_tipo;
 
     @FXML
-    private TableColumn<Servico, Double> tc_valor;
+    private TableColumn<ServicoDTO, Double> tc_valor;
     
     @FXML
-    private TableView<Servico> table_servicos;
+    private TableView<ServicoDTO> table_servicos;
 
     @FXML
     private TextField tf_descServico;
@@ -63,39 +68,52 @@ public class ProfissionalMenuServicos implements Initializable {
     @FXML
     public void initialize(URL location, ResourceBundle resources) {
 
-        tc_descricao.setCellValueFactory(new PropertyValueFactory<Servico, String>("descricao"));
-        tc_tipo.setCellValueFactory(new PropertyValueFactory<Servico, String>("tipo"));
-        tc_valor.setCellValueFactory(new PropertyValueFactory<Servico, Double>("valorHora"));
-        tc_profissional.setCellValueFactory(new PropertyValueFactory<Servico, String>("profissional"));
+        tc_descricao.setCellValueFactory(new PropertyValueFactory<ServicoDTO, String>("descricao"));
+        tc_tipo.setCellValueFactory(new PropertyValueFactory<ServicoDTO, String>("tipo"));
+        tc_valor.setCellValueFactory(new PropertyValueFactory<ServicoDTO, Double>("valorHora"));
+        tc_profissional.setCellValueFactory(new PropertyValueFactory<ServicoDTO, String>("profissional"));
         
-        JSONArray servicosArray = ScenesController.getUtilizador().getJSONArray("servicos");
+        ApiService apiService = new ApiService(); 
+        ObservableList<ServicoDTO> listaServicos = FXCollections.observableArrayList();
+       
+        try {
+            String response;
+            response = apiService.getData("/servicos/profissional/" + ScenesController.getUtilizadorID());
+            JSONArray servicosArray = new JSONArray(response);
+            for(int i = 0; i < servicosArray.length(); i++){
+                JSONObject objeto = servicosArray.getJSONObject(i);
+    
+                String descricao = objeto.getString("descricao");
+                String tipo = objeto.getString("tipo");
+                Double valor = objeto.getDouble("valorHora");
+                JSONObject pro = objeto.getJSONObject("profissional");
+                
+                ServicoDTO servico = new ServicoDTO();
+                servico.setDescricao(descricao);
+                servico.setValorHora(valor);
+                servico.setTipo(Servicos.valueOf(tipo));
+                UtilizadorDTO profissional = new UtilizadorDTO();
+                
+    
+                listaServicos.add(servico);
+            }
+            
+            table_servicos.setItems(listaServicos);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+       
+        //JSONArray servicosArray = ScenesController.getUtilizador().getJSONArray("servicos");
         //String nomeProfissional = ScenesController.getUtilizador().getString("nome");
 
-        ObservableList<Servico> listaServicos = FXCollections.observableArrayList();
-        for(int i = 0; i < servicosArray.length(); i++){
-            JSONObject objeto = servicosArray.getJSONObject(i);
-
-            String descricao = objeto.getString("descricao");
-            String tipo = objeto.getString("tipo");
-            Double valor = objeto.getDouble("valorHora");
-            
-            Servico servico = new Servico();
-            servico.setDescricao(descricao);
-            servico.setValorHora(valor);
-            servico.setTipo(Servicos.valueOf(tipo));
-            
-
-            listaServicos.add(servico);
-        }
-        
-        table_servicos.setItems(listaServicos);
+       
 
         button_adicionarServico.setOnAction(ae ->{
             anchorpane_servico.setVisible(true);
         });
 
         button_concluirServico.setOnAction(ae ->{
-            Servico servico = new Servico();
+            ServicoDTO servico = new ServicoDTO();
             servico.setDescricao(tf_descServico.getText());
             servico.setTipo(Servicos.valueOf(tf_tipoServico.getText()));
             Double valor = Double.parseDouble(tf_valorHoraServico.getText());
