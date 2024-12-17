@@ -17,6 +17,7 @@ import Equipa2.Incremento3.models.dto.ServicoDTO;
 import Equipa2.Incremento3.models.dto.UtilizadorDTO;
 import Equipa2.Incremento3.models.enums.Servicos;
 import Equipa2.Incremento3.services.ApiService;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -71,8 +72,12 @@ public class ProfissionalMenuServicos implements Initializable {
         tc_descricao.setCellValueFactory(new PropertyValueFactory<ServicoDTO, String>("descricao"));
         tc_tipo.setCellValueFactory(new PropertyValueFactory<ServicoDTO, String>("tipo"));
         tc_valor.setCellValueFactory(new PropertyValueFactory<ServicoDTO, Double>("valorHora"));
-        tc_profissional.setCellValueFactory(new PropertyValueFactory<ServicoDTO, String>("profissional"));
-        
+        //tc_profissional.setCellValueFactory(new PropertyValueFactory<UtilizadorDTO, String>("nome"));
+        tc_profissional.setCellValueFactory(cellData -> {
+            String nome = cellData.getValue().getProfissional().getNome();
+            return new SimpleObjectProperty<>(nome);
+        });
+
         ApiService apiService = new ApiService(); 
         ObservableList<ServicoDTO> listaServicos = FXCollections.observableArrayList();
        
@@ -82,20 +87,22 @@ public class ProfissionalMenuServicos implements Initializable {
             JSONArray servicosArray = new JSONArray(response);
             for(int i = 0; i < servicosArray.length(); i++){
                 JSONObject objeto = servicosArray.getJSONObject(i);
-    
-                String descricao = objeto.getString("descricao");
-                String tipo = objeto.getString("tipo");
-                Double valor = objeto.getDouble("valorHora");
                 JSONObject pro = objeto.getJSONObject("profissional");
                 
                 ServicoDTO servico = new ServicoDTO();
-                servico.setDescricao(descricao);
-                servico.setValorHora(valor);
-                servico.setTipo(Servicos.valueOf(tipo));
+                servico.setDescricao(objeto.getString("descricao"));
+                servico.setValorHora(objeto.getDouble("valorHora"));
+                servico.setTipo(Servicos.valueOf(objeto.getString("tipo")));
+
                 UtilizadorDTO profissional = new UtilizadorDTO();
+                profissional.setNome(pro.getString("nome"));
+                servico.setProfissional(profissional);
+
                 
     
                 listaServicos.add(servico);
+             
+                
             }
             
             table_servicos.setItems(listaServicos);
