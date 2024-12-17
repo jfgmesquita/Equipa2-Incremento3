@@ -4,7 +4,8 @@ package Equipa2.Incremento3.GUI.Scenes;
 
 import java.io.IOException;
 import java.net.URL;
-
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 import java.util.UUID;
 
@@ -24,7 +25,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -36,13 +39,25 @@ public class SolicitacoesMenu implements Initializable {
     private AnchorPane anchorpane_servico;
 
     @FXML
-    private Button button_adicionarServico;
+    private DatePicker date;
 
     @FXML
-    private Button button_concluirServico;
+    private Button button_adicionarSolicitacao;
+
+    @FXML
+    private Button button_concluirSolicitacao;
 
     @FXML
     private Button button_voltar;
+    
+    @FXML
+    private Button button_recusar;
+
+    @FXML
+    private Button button_aceitar;
+
+    @FXML
+    private Button button_voltarPraSolicitacao;
 
     @FXML
     private TableColumn<SolicitacaoDTO, String> tc_descricao;
@@ -63,7 +78,22 @@ public class SolicitacoesMenu implements Initializable {
     private TableColumn<SolicitacaoDTO, String> tc_data;
 
     @FXML
+    private TableColumn<ServicoDTO, String> tc_ServicoDescricao;
+
+    @FXML
+    private TableColumn<ServicoDTO, String> tc_ServicoProfissional;
+
+    @FXML
+    private TableColumn<ServicoDTO, String> tc_ServicoTipo;
+
+    @FXML
+    private TableColumn<ServicoDTO, Double> tc_ServicoValor;
+
+    @FXML
     private TableView<SolicitacaoDTO> table_solicitacoes;
+
+    @FXML
+    private TableView<ServicoDTO> table_servicos;
 
     @FXML
     private TextField tf_descServico;
@@ -75,8 +105,34 @@ public class SolicitacoesMenu implements Initializable {
     private TextField tf_valorHoraServico;
 
     @FXML
+    private TextField tf_hora;
+
+    @FXML
     public void initialize(URL location, ResourceBundle resources) {
 
+        tc_ServicoDescricao.setCellValueFactory(new PropertyValueFactory<ServicoDTO, String>("descricao"));
+        tc_ServicoTipo.setCellValueFactory(new PropertyValueFactory<ServicoDTO, String>("tipo"));
+        tc_ServicoValor.setCellValueFactory(new PropertyValueFactory<ServicoDTO, Double>("valorHora"));
+        //tc_profissional.setCellValueFactory(new PropertyValueFactory<UtilizadorDTO, String>("nome"));
+        tc_ServicoProfissional.setCellValueFactory(cellData -> {
+            String nome = cellData.getValue().getProfissional().getNome();
+            return new SimpleObjectProperty<>(nome);
+        });
+
+        JSONObject utilizador = null;
+        //Ler Utilizador
+        ApiService apiService = new ApiService();
+        try{
+
+        utilizador = new JSONObject(apiService.getData("/utilizadores/" + ScenesController.getUtilizadorID()));
+       // tipoUti = utilizador.getString("userType");
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        final String tipoUti = utilizador.getString("userType");
+        //
+        //Ler Solicitacoes da BD
         tc_status.setCellValueFactory(new PropertyValueFactory<SolicitacaoDTO, String>("status"));
         tc_data.setCellValueFactory(new PropertyValueFactory<SolicitacaoDTO, String>("data"));
 
@@ -92,14 +148,22 @@ public class SolicitacoesMenu implements Initializable {
             Double valor = cellData.getValue().getServico().getValorHora();
             return new SimpleObjectProperty<>(valor);
         });
-        //tc_profissional.setCellValueFactory(new PropertyValueFactory<UtilizadorDTO, String>("nome"));
+        if(tipoUti.equals("PROFISSIONAL")){
+            button_adicionarSolicitacao.setVisible(false);
+        tc_profissional.setText("Cliente");
         tc_profissional.setCellValueFactory(cellData -> {
             String nome = cellData.getValue().getCliente().getNome();
             return new SimpleObjectProperty<>(nome);
         });
-
-        ApiService apiService = new ApiService(); 
-        ObservableList<SolicitacaoDTO> listaServicos = FXCollections.observableArrayList();
+    }else{
+            button_adicionarSolicitacao.setVisible(true);
+        tc_profissional.setText("Profissional");
+        tc_profissional.setCellValueFactory(cellData -> {
+            String nome = cellData.getValue().getServico().getProfissional().getNome();
+            return new SimpleObjectProperty<>(nome);
+    });
+    }
+        ObservableList<SolicitacaoDTO> listaSolicitacoes = FXCollections.observableArrayList();
        
         try {
             String response;
@@ -108,7 +172,9 @@ public class SolicitacoesMenu implements Initializable {
             for(int i = 0; i < servicosArray.length(); i++){
                 JSONObject objeto = servicosArray.getJSONObject(i);
                 JSONObject cli = objeto.getJSONObject("cliente");
+               
                 JSONObject servi = objeto.getJSONObject("servico");
+                JSONObject pro = servi.getJSONObject("profissional");
                 
                 SolicitacaoDTO solicitacaoDTO = new SolicitacaoDTO();
                 solicitacaoDTO.setData(objeto.getString("data"));
@@ -118,44 +184,99 @@ public class SolicitacoesMenu implements Initializable {
                 servico.setDescricao(servi.getString("descricao"));
                 servico.setValorHora(servi.getDouble("valorHora"));
                 servico.setTipo(Servicos.valueOf(servi.getString("tipo")));
+                
+                UtilizadorDTO profissional = new UtilizadorDTO();
+                profissional.setNome(pro.getString("nome"));
+                servico.setProfissional(profissional);
 
                 UtilizadorDTO cliente = new UtilizadorDTO();
                 cliente.setNome(cli.getString("nome"));
                 solicitacaoDTO.setCliente(cliente);
+                
 
                 solicitacaoDTO.setServico(servico);
     
-                listaServicos.add(solicitacaoDTO);
+                listaSolicitacoes.add(solicitacaoDTO);
              
                 
             }
-            table_solicitacoes.setItems(listaServicos);
+            table_solicitacoes.setItems(listaSolicitacoes);
         } catch (Exception e) {
             e.printStackTrace();
         }
-       
-        //JSONArray servicosArray = ScenesController.getUtilizador().getJSONArray("servicos");
-        //String nomeProfissional = ScenesController.getUtilizador().getString("nome");
+        //Fim de leitura das Solicitações
+        //Ler Servicos
+        ObservableList<ServicoDTO> listaDeServicos = FXCollections.observableArrayList();
+           
+        try {
+            String response;
+            response = apiService.getData("/servicos");
+            JSONArray servicosArray = new JSONArray(response);
+            for(int i = 0; i < servicosArray.length(); i++){
+                JSONObject objeto = servicosArray.getJSONObject(i);
+                JSONObject pro = objeto.getJSONObject("profissional");
+                
+                ServicoDTO servico = new ServicoDTO();
+                servico.setDescricao(objeto.getString("descricao"));
+                servico.setValorHora(objeto.getDouble("valorHora"));
+                servico.setTipo(Servicos.valueOf(objeto.getString("tipo")));
 
-       
+                UtilizadorDTO profissional = new UtilizadorDTO();
+                profissional.setNome(pro.getString("nome"));
+                servico.setProfissional(profissional);
 
-        button_adicionarServico.setOnAction(ae ->{
-            anchorpane_servico.setVisible(true);
+                
+                listaDeServicos.add(servico);
+             
+                
+            }
+            table_servicos.setItems(listaDeServicos);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        //
+
+        table_solicitacoes.setOnMouseClicked(ae -> {
+            System.out.println("teste");
+            SolicitacaoDTO solicitacao = table_solicitacoes.getSelectionModel().getSelectedItem();
+            if(tipoUti.equals("PROFISSIONAL")){
+                if(solicitacao.getStatus().toString().equals("PENDENTE")){
+                    button_recusar.setVisible(true);
+                    button_aceitar.setVisible(true);
+                } else{
+                    button_recusar.setVisible(false);
+                    button_aceitar.setVisible(false);
+                }
+            }
         });
 
-        button_concluirServico.setOnAction(ae ->{
-           // ServicoDTO servico = new ServicoDTO();
-          //  servico.setDescricao(tf_descServico.getText());
-           // servico.setTipo(Servicos.valueOf(tf_tipoServico.getText()));
-           // Double valor = Double.parseDouble(tf_valorHoraServico.getText());
-            //servico.setValorHora(valor);
-            //listaServicos.add(servico);
-            //falta adicionar à base de dados
-
-            tf_descServico.setText("");
-            tf_tipoServico.setText("");
-            tf_valorHoraServico.setText("");
+        button_voltarPraSolicitacao.setOnAction(ae -> {
             anchorpane_servico.setVisible(false);
+            table_solicitacoes.setVisible(true);
+            button_voltarPraSolicitacao.setVisible(false);
+        });
+
+        button_adicionarSolicitacao.setOnAction(ae ->{
+            anchorpane_servico.setVisible(true);
+            table_solicitacoes.setVisible(false);
+            button_voltarPraSolicitacao.setVisible(true);
+        });
+
+        button_concluirSolicitacao.setOnAction(ae ->{
+            ServicoDTO servicoDTO = table_servicos.getSelectionModel().getSelectedItem();
+            SolicitacaoDTO solicitacaoDTO = new SolicitacaoDTO();
+            solicitacaoDTO.setServico(servicoDTO);
+            solicitacaoDTO.setStatus(StatusServico.PENDENTE);
+            
+            String data = date.getValue() + " " + tf_hora.getText();
+            solicitacaoDTO.setData(data);
+
+            listaSolicitacoes.add(solicitacaoDTO);
+            
+
+            anchorpane_servico.setVisible(false);
+            table_solicitacoes.setVisible(true);
+            button_voltarPraSolicitacao.setVisible(false);
         });
 
         button_voltar.setOnAction(ae -> {
