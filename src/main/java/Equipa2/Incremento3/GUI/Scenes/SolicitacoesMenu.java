@@ -227,6 +227,7 @@ public class SolicitacoesMenu implements Initializable {
                 servico.setDescricao(objeto.getString("descricao"));
                 servico.setValorHora(objeto.getDouble("valorHora"));
                 servico.setTipo(Servicos.valueOf(objeto.getString("tipo")));
+                servico.setId(UUID.fromString(objeto.getString("id")));
 
                 UtilizadorDTO profissional = new UtilizadorDTO();
                 profissional.setNome(pro.getString("nome"));
@@ -279,47 +280,6 @@ public class SolicitacoesMenu implements Initializable {
             SolicitacaoDTO solicitacaoDTO = new SolicitacaoDTO();
             solicitacaoDTO.setServico(servicoDTO);
             solicitacaoDTO.setStatus(StatusServico.PENDENTE);
-
-            // Formatar a data corretamente
-
-            LocalDate localDate = date.getValue();
-            LocalTime localTime = LocalTime.parse(tf_hora.getText());
-            LocalDateTime localDateTime = LocalDateTime.of(localDate, localTime);
-            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
-            String formattedDate = localDateTime.format(dtf);
-
-            System.out.println("Data fornecida: " + formattedDate);
-
-            try {
-                LocalDateTime.parse(formattedDate, dtf);
-            } catch (DateTimeParseException e) {
-                System.out.println("Erro no formato da data. Use 'dd-MM-yyyy HH:mm'.");
-                e.printStackTrace();
-                return;
-            }
-            solicitacaoDTO.setData(formattedDate);
-
-            // Obter as informações do cliente a partir da API
-            ApiService apiService1 = new ApiService();
-            Gson gson = new Gson();
-            UtilizadorDTO cliente = null;
-
-            try {
-                UUID utilizadorID = ScenesController.getUtilizadorID();
-                String response = apiService1.getData("/utilizadores", utilizadorID);
-                cliente = gson.fromJson(response, UtilizadorDTO.class);
-            } catch (IOException | InterruptedException | JsonSyntaxException e) {
-                e.printStackTrace();
-            }
-
-            // Adicionar o cliente à solicitação
-            if (cliente != null) {
-                solicitacaoDTO.setCliente(cliente);
-            }
-
-            // Criar um objeto Pagamento
-            // PagamentoDTO pagamento = new PagamentoDTO();
-            // solicitacaoDTO.setPagamento(pagamento);
 
             listaSolicitacoes.add(solicitacaoDTO);
 

@@ -43,6 +43,9 @@ public class ProfissionalMenuServicos implements Initializable {
     private Button button_voltar;
 
     @FXML
+    private Button button_voltarPraTabela;
+
+    @FXML
     private TableColumn<ServicoDTO, String> tc_descricao;
 
     @FXML
@@ -111,6 +114,7 @@ public class ProfissionalMenuServicos implements Initializable {
 
         button_adicionarServico.setOnAction(ae ->{
             anchorpane_servico.setVisible(true);
+            button_voltarPraTabela.setVisible(true);
         });
 
         button_concluirServico.setOnAction(ae ->{
@@ -160,6 +164,11 @@ public class ProfissionalMenuServicos implements Initializable {
 
         button_voltar.setOnAction(ae -> {
             ScenesController.changeScene("/Equipa2/Incremento3/GUI/Fxmls/allaround_menucliente.fxml");
+        });
+
+        button_voltarPraTabela.setOnAction(ae -> {
+            anchorpane_servico.setVisible(false);
+            button_voltarPraTabela.setVisible(false);
         });
 
     }

@@ -17,6 +17,12 @@ import Equipa2.Incremento3.services.ApiService;
 public class ClienteMenu implements Initializable {
     
     @FXML
+    private Button button_verUtilizadores;
+    
+    @FXML
+    private Button button_adicionarServico;
+
+    @FXML
     private Button button_logOut;
 
     @FXML
@@ -38,10 +44,17 @@ public class ClienteMenu implements Initializable {
         label_nomeCliente.setText(nome + " - " + tipo);
         label_emailCliente.setText(email);
         
+        button_adicionarServico.setVisible(false);
+        button_verUtilizadores.setVisible(false);
+        System.out.println(tipo);
         if(tipo.equals("CLIENTE")){ 
             button_servicos.setDisable(true); 
             button_solicitar.setDisable(false);}
-        else{ 
+            
+        else if(tipo.equals("ADMINISTRADOR")){ 
+            button_adicionarServico.setVisible(true);
+            button_verUtilizadores.setVisible(true);
+        }else {
             button_servicos.setDisable(false); 
             button_solicitar.setDisable(true);}
     }
