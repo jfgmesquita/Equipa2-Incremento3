@@ -220,6 +220,7 @@ public class SolicitacoesMenu implements Initializable {
                 servico.setDescricao(objeto.getString("descricao"));
                 servico.setValorHora(objeto.getDouble("valorHora"));
                 servico.setTipo(Servicos.valueOf(objeto.getString("tipo")));
+                servico.setId(UUID.fromString(objeto.getString("id")));
 
                 UtilizadorDTO profissional = new UtilizadorDTO();
                 profissional.setNome(pro.getString("nome"));
@@ -267,7 +268,7 @@ public class SolicitacoesMenu implements Initializable {
             SolicitacaoDTO solicitacaoDTO = new SolicitacaoDTO();
             solicitacaoDTO.setServico(servicoDTO);
             solicitacaoDTO.setStatus(StatusServico.PENDENTE);
-            
+
             String data = date.getValue() + " " + tf_hora.getText();
             solicitacaoDTO.setData(data);
 
