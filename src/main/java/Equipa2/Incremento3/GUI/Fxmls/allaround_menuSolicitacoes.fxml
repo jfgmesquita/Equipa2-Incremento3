@@ -74,6 +74,26 @@
                   <Font size="14.0" />
                </font>
             </Button>
+            <Button fx:id="button_comecar" layoutX="323.0" layoutY="366.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="103.0" style="-fx-cursor: hand; -fx-background-color: green;" text="COMEÇAR" textFill="WHITE" underline="true" visible="false">
+               <font>
+                  <Font size="17.0" />
+               </font>
+            </Button>
+            <Button fx:id="button_cancelar" layoutX="167.0" layoutY="366.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="114.0" style="-fx-cursor: hand; -fx-background-color: red;" text="CANCELAR" textFill="WHITE" underline="true" visible="false">
+               <font>
+                  <Font size="17.0" />
+               </font>
+            </Button>
+            <Button fx:id="button_concluir" layoutX="320.0" layoutY="366.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="114.0" style="-fx-cursor: hand; -fx-background-color: green;" text="CONCLUIR" textFill="WHITE" underline="true" visible="false">
+               <font>
+                  <Font size="17.0" />
+               </font>
+            </Button>
+            <Button fx:id="button_pagar" layoutX="330.0" layoutY="365.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="114.0" style="-fx-cursor: hand; -fx-background-color: green;" text="PAGAR" textFill="WHITE" underline="true" visible="false">
+               <font>
+                  <Font size="17.0" />
+               </font>
+            </Button>
          </children>
       </AnchorPane>
    </children>

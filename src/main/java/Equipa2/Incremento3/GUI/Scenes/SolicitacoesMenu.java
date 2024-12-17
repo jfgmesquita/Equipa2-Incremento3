@@ -66,6 +66,18 @@ public class SolicitacoesMenu implements Initializable {
     private Button button_voltarPraSolicitacao;
 
     @FXML
+    private Button button_cancelar;
+
+    @FXML
+    private Button button_comecar;
+
+    @FXML
+    private Button button_concluir;
+
+    @FXML
+    private Button button_pagar;
+
+    @FXML
     private TableColumn<SolicitacaoDTO, String> tc_descricao;
 
     @FXML
@@ -244,17 +256,41 @@ public class SolicitacoesMenu implements Initializable {
         //
 
         table_solicitacoes.setOnMouseClicked(ae -> {
-            System.out.println("teste");
+            
             SolicitacaoDTO solicitacao = table_solicitacoes.getSelectionModel().getSelectedItem();
             if(tipoUti.equals("PROFISSIONAL")){
                 if(solicitacao.getStatus().toString().equals("PENDENTE")){
                     button_recusar.setVisible(true);
                     button_aceitar.setVisible(true);
-                } else{
+                    button_comecar.setVisible(false);
+                    button_concluir.setVisible(false);
+                    button_cancelar.setVisible(false);
+                }else if(solicitacao.getStatus().toString().equals("ACEITE")){
+                    button_comecar.setVisible(true);
+                    button_cancelar.setVisible(true);
                     button_recusar.setVisible(false);
                     button_aceitar.setVisible(false);
+                    button_concluir.setVisible(false);
+                }else if(solicitacao.getStatus().toString().equals("ANDAMENTO")){
+                    button_cancelar.setVisible(true);
+                    button_concluir.setVisible(true);
+                    button_recusar.setVisible(false);
+                    button_aceitar.setVisible(false);
+                    button_comecar.setVisible(false);
+                }else if(solicitacao.getStatus().toString().equals("CANCELADO") || solicitacao.getStatus().toString().equals("CONCLUIDO")){
+                    button_recusar.setVisible(false);
+                    button_aceitar.setVisible(false);
+                    button_comecar.setVisible(false);
+                    button_cancelar.setVisible(false);
+                    button_concluir.setVisible(false);
                 }
-            }
+                } else{
+                    if(solicitacao.getStatus().toString().equals("CONCLUIDO")){
+                        button_pagar.setVisible(true);
+                   } else{
+                       button_pagar.setVisible(false);
+                   }
+                }
         });
 
         button_voltarPraSolicitacao.setOnAction(ae -> {
@@ -378,6 +414,106 @@ public class SolicitacoesMenu implements Initializable {
                 e.printStackTrace();
             }
             table_solicitacoes.refresh();
+        });
+
+        button_comecar.setOnAction(ae -> {
+            SolicitacaoDTO solicitacao = table_solicitacoes.getSelectionModel().getSelectedItem();
+            if(solicitacao == null || solicitacao.getId() == null){
+                System.out.println("Erro: Solicitação não selecionada ou ID da solicitação é nulo.");
+                return;
+            }
+
+            solicitacao.setStatus(StatusServico.ANDAMENTO);
+            String json = new Gson().toJson(solicitacao);
+            System.out.println("JSON enviado: " + json);
+            try {
+                String response = apiService.putData("/solicitacoes/" + solicitacao.getId(), json);
+                System.out.println("Resposta da API: " + response);
+            } catch (IOException | InterruptedException e) {
+                e.printStackTrace();
+            }
+            table_solicitacoes.refresh();
+        });
+
+        button_concluir.setOnAction(ae -> {
+            SolicitacaoDTO solicitacao = table_solicitacoes.getSelectionModel().getSelectedItem();
+            if(solicitacao == null || solicitacao.getId() == null){
+                System.out.println("Erro: Solicitação não selecionada ou ID da solicitação é nulo.");
+                return;
+            }
+
+            solicitacao.setStatus(StatusServico.CONCLUIDO);
+            String json = new Gson().toJson(solicitacao);
+            System.out.println("JSON enviado: " + json);
+            try {
+                String response = apiService.putData("/solicitacoes/" + solicitacao.getId(), json);
+                System.out.println("Resposta da API: " + response);
+            } catch (IOException | InterruptedException e) {
+                e.printStackTrace();
+            }
+            table_solicitacoes.refresh();
+        });
+
+        button_cancelar.setOnAction(ae -> {
+            SolicitacaoDTO solicitacao = table_solicitacoes.getSelectionModel().getSelectedItem();
+            if(solicitacao == null || solicitacao.getId() == null){
+                System.out.println("Erro: Solicitação não selecionada ou ID da solicitação é nulo.");
+                return;
+            }
+
+            solicitacao.setStatus(StatusServico.CANCELADO);
+            String json = new Gson().toJson(solicitacao);
+            System.out.println("JSON enviado: " + json);
+            try {
+                String response = apiService.putData("/solicitacoes/" + solicitacao.getId(), json);
+                System.out.println("Resposta da API: " + response);
+            } catch (IOException | InterruptedException e) {
+                e.printStackTrace();
+            }
+            table_solicitacoes.refresh();
+        });
+
+        button_pagar.setOnAction(ae -> {
+            SolicitacaoDTO solicitacao = table_solicitacoes.getSelectionModel().getSelectedItem();
+            if(solicitacao == null || solicitacao.getId() == null){
+                System.out.println("Erro: Solicitação não selecionada ou ID da solicitação é nulo.");
+                return;
+            }
+
+            // Criar um objeto Pagamento
+            PagamentoDTO pagamento = new PagamentoDTO();
+            pagamento.setSolicitacaoId(solicitacao.getId());
+            pagamento.setValor(solicitacao.getServico().getValorHora());
+            //pagamento.setValor(solicitacao.getServico().getValorHora() * solicitacao.getServico().getHoras());
+
+            // Enviar o pagamento para a API para persistir
+            String json = new Gson().toJson(pagamento);
+            System.out.println("JSON enviado: " + json);
+
+            try {
+                apiService.postData("/pagamentos", json);
+            } catch (IOException | InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            // Atualizar o status da solicitação
+            solicitacao.setStatus(StatusServico.PAGO);
+            String jsonSolicitacao = new Gson().toJson(solicitacao);
+            System.out.println("JSON enviado: " + jsonSolicitacao);
+            try {
+                String response = apiService.putData("/solicitacoes/" + solicitacao.getId(), jsonSolicitacao);
+                System.out.println("Resposta da API: " + response);
+            } catch (IOException | InterruptedException e) {
+                e.printStackTrace();
+            }
+            table_solicitacoes.refresh();
+
+            // Exibir uma mensagem de sucesso
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Pagamento efetuado");
+            alert.setHeaderText("Pagamento efetuado com sucesso");
+            alert.setContentText("O pagamento foi efetuado com sucesso. O serviço foi concluído.");
+            alert.showAndWait();
         });
 
     }

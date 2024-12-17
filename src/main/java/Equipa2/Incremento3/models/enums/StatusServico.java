@@ -27,5 +27,10 @@ public enum StatusServico {
     /**
      * Indica que o serviço foi cancelado.
      */
-    CANCELADO
+    CANCELADO,
+
+    /**
+     * Indica que o serviço foi pago.
+     */
+    PAGO
 }
