@@ -37,31 +37,25 @@
                   <Font name="Arial Rounded MT Bold" size="12.0" />
                </font>
             </Label>
-            <Pane layoutX="-25.0" layoutY="140.0" prefHeight="2.0" prefWidth="626.0" style="-fx-background-color: gold;" />
-            <Button fx:id="button_solicitar" alignment="BASELINE_LEFT" layoutX="-2.0" layoutY="139.0" mnemonicParsing="false" prefHeight="46.0" prefWidth="589.0" style="-fx-background-color: transparent; -fx-cursor: hand;" text="Solicitar Serviço" textFill="#9a00b2">
+            <Pane layoutX="-15.0" layoutY="142.0" prefHeight="2.0" prefWidth="626.0" style="-fx-background-color: gold;" />
+            <Button fx:id="button_verSolicitacoes" alignment="BASELINE_LEFT" layoutX="-2.0" layoutY="144.0" mnemonicParsing="false" prefHeight="46.0" prefWidth="589.0" style="-fx-background-color: transparent; -fx-cursor: hand;" text="Minhas Solicitações" textFill="#9a00b2">
                <font>
                   <Font name="Arial Rounded MT Bold" size="16.0" />
                </font>
             </Button>
-            <Pane layoutX="-15.0" layoutY="184.0" prefHeight="2.0" prefWidth="626.0" style="-fx-background-color: gold;" />
-            <Button fx:id="button_verSolicitacoes" alignment="BASELINE_LEFT" layoutX="-2.0" layoutY="186.0" mnemonicParsing="false" prefHeight="46.0" prefWidth="589.0" style="-fx-background-color: transparent; -fx-cursor: hand;" text="Minhas Solicitações" textFill="#9a00b2">
+            <Pane layoutX="-15.0" layoutY="189.0" prefHeight="2.0" prefWidth="626.0" style="-fx-background-color: gold;" />
+            <Button fx:id="button_logOut" alignment="BASELINE_LEFT" layoutX="-1.0" layoutY="237.0" mnemonicParsing="false" prefHeight="46.0" prefWidth="589.0" style="-fx-background-color: transparent; -fx-cursor: hand;" text="Log Out" textFill="#9a00b2">
                <font>
                   <Font name="Arial Rounded MT Bold" size="16.0" />
                </font>
             </Button>
-            <Pane layoutX="-15.0" layoutY="231.0" prefHeight="2.0" prefWidth="626.0" style="-fx-background-color: gold;" />
-            <Button fx:id="button_logOut" alignment="BASELINE_LEFT" layoutX="-1.0" layoutY="279.0" mnemonicParsing="false" prefHeight="46.0" prefWidth="589.0" style="-fx-background-color: transparent; -fx-cursor: hand;" text="Log Out" textFill="#9a00b2">
+            <Pane layoutX="-15.0" layoutY="234.0" prefHeight="2.0" prefWidth="626.0" style="-fx-background-color: gold;" />
+            <Button fx:id="button_servicos" alignment="BASELINE_LEFT" disable="true" layoutX="-2.0" layoutY="191.0" mnemonicParsing="false" prefHeight="46.0" prefWidth="600.0" style="-fx-background-color: transparent; -fx-cursor: hand;" text="Meus Serviços" textFill="#9a00b2">
                <font>
                   <Font name="Arial Rounded MT Bold" size="16.0" />
                </font>
             </Button>
-            <Pane layoutX="-15.0" layoutY="276.0" prefHeight="2.0" prefWidth="626.0" style="-fx-background-color: gold;" />
-            <Button fx:id="button_servicos" alignment="BASELINE_LEFT" disable="true" layoutX="-2.0" layoutY="233.0" mnemonicParsing="false" prefHeight="46.0" prefWidth="600.0" style="-fx-background-color: transparent; -fx-cursor: hand;" text="Meus Serviços" textFill="#9a00b2">
-               <font>
-                  <Font name="Arial Rounded MT Bold" size="16.0" />
-               </font>
-            </Button>
-            <Pane layoutX="-15.0" layoutY="323.0" prefHeight="2.0" prefWidth="626.0" style="-fx-background-color: gold;" />
+            <Pane layoutX="-15.0" layoutY="281.0" prefHeight="2.0" prefWidth="626.0" style="-fx-background-color: gold;" />
          </children>
       </AnchorPane>
    </children>

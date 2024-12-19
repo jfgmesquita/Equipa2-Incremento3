@@ -23,9 +23,6 @@ public class ClienteMenu implements Initializable {
     private Button button_servicos;
 
     @FXML
-    private Button button_solicitar;
-
-    @FXML
     private Button button_verSolicitacoes;
 
     @FXML
@@ -39,11 +36,10 @@ public class ClienteMenu implements Initializable {
         label_emailCliente.setText(email);
         
         if(tipo.equals("CLIENTE")){ 
-            button_servicos.setDisable(true); 
-            button_solicitar.setDisable(false);}
+            button_servicos.setDisable(true); }
         else{ 
             button_servicos.setDisable(false); 
-            button_solicitar.setDisable(true);}
+    }
     }
 
     @FXML

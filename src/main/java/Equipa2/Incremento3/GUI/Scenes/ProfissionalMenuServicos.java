@@ -22,6 +22,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -30,6 +31,9 @@ import javafx.scene.layout.AnchorPane;
 //import lombok.launch.PatchFixesHider.Util;
 
 public class ProfissionalMenuServicos implements Initializable {
+    @FXML
+    private ChoiceBox<String> choicebox_tipos;
+
     @FXML
     private AnchorPane anchorpane_servico;
 
@@ -68,7 +72,8 @@ public class ProfissionalMenuServicos implements Initializable {
 
     @FXML
     public void initialize(URL location, ResourceBundle resources) {
-
+        choicebox_tipos.getItems().addAll("COZINHA", "LIMPEZA", "PINTURA", "CARPINTARIA", "JARDINAGEM", "PICHELARIA");
+        
         tc_descricao.setCellValueFactory(new PropertyValueFactory<ServicoDTO, String>("descricao"));
         tc_tipo.setCellValueFactory(new PropertyValueFactory<ServicoDTO, String>("tipo"));
         tc_valor.setCellValueFactory(new PropertyValueFactory<ServicoDTO, Double>("valorHora"));
@@ -117,7 +122,7 @@ public class ProfissionalMenuServicos implements Initializable {
             // Criar um novo serviço
             ServicoDTO servico = new ServicoDTO();
             servico.setDescricao(tf_descServico.getText());
-            servico.setTipo(Servicos.valueOf(tf_tipoServico.getText()));
+            servico.setTipo(Servicos.valueOf(choicebox_tipos.getValue()));
             Double valor = Double.parseDouble(tf_valorHoraServico.getText());
             servico.setValorHora(valor);
 
@@ -153,7 +158,6 @@ public class ProfissionalMenuServicos implements Initializable {
 
             // Limpar os campos
             tf_descServico.setText("");
-            tf_tipoServico.setText("");
             tf_valorHoraServico.setText("");
             anchorpane_servico.setVisible(false);
         });

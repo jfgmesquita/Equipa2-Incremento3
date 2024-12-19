@@ -65,7 +65,7 @@ public class Registo implements Initializable{
 
         choiceBox_metodoPagamento.getItems().addAll("MBWAY", "CARTAO_DE_CREDITO","TRANSFERENCIA_BANCARIA","PAYPAL");
         //Solução Temporaria
-        choiceBox_servicos.getItems().addAll("COZINHA");
+        choiceBox_servicos.getItems().addAll("COZINHA", "LIMPEZA", "PINTURA", "CARPINTARIA", "JARDINAGEM", "PICHELARIA");
 
         button_voltarLogin.setOnAction(ae -> {
             System.out.println("Botão VoltarLogin Apertado");
